@@ -13,7 +13,15 @@ if type == 'get'
 end
 
 if type == 'post'
-  response = HTTParty.post(url, body: body.to_hash, headers: headers.to_hash)
+  if headers.class == NilClass
+    response = HTTParty.post(url, body: body.to_hash)
+
+  elsif body.class == NilClass
+    response = HTTParty.post(url, headers: headers.to_hash)
+
+  else
+    response = HTTParty.post(url, body: body.to_hash, headers: headers.to_hash)
+  end
 end
 
 puts "Body: #{response.body}\nCode: #{response.code}"
